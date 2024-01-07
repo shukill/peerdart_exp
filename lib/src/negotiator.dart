@@ -156,12 +156,14 @@ class Negotiator<T extends BaseConnection> {
   }
 
   void _addTracksToConnection(
-      MediaStream stream, RTCPeerConnection peerConnection) {
-    logger.log("add tracks from stream ${stream.id} to peer connection");
+    MediaStream? stream,
+    RTCPeerConnection peerConnection,
+  ) {
+    logger.log("add tracks from stream ${stream?.id} to peer connection");
 
-    stream
-        .getTracks()
-        .forEach((track) => peerConnection.addTrack(track, stream));
+    stream?.getTracks().forEach(
+          (track) => peerConnection.addTrack(track, stream),
+        );
   }
 
   void _setupListeners(RTCPeerConnection peerConnection) {
@@ -316,11 +318,11 @@ class Negotiator<T extends BaseConnection> {
   }
 
   void _addStreamToMediaConnection(
-    MediaStream stream,
+    MediaStream? stream,
     MediaConnection mediaConnection,
   ) {
     logger.log(
-        "add stream ${stream.id} to media connection ${mediaConnection.connectionId}");
+        "add stream ${stream?.id} to media connection ${mediaConnection.connectionId}");
 
     mediaConnection.addStream(stream);
   }

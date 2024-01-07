@@ -273,7 +273,8 @@ class Peer extends StreamEventEmitter {
     }
   }
 
-  MediaConnection call(String peer, MediaStream stream, {CallOption? options}) {
+  MediaConnection call(String peer, MediaStream? stream,
+      {CallOption? options}) {
     if (disconnected) {
       logger.warn(
         "You cannot connect to a new Peer because you called .disconnect() on this Peer and ended your connection with the server. You can create a new Peer to reconnect.",

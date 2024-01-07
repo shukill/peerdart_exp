@@ -23,6 +23,9 @@ abstract class BaseConnection extends StreamEventEmitter {
   void handleMessage(ServerMessage message);
 
   void closeRequest() {
-    emit("close", null);
+    emit("close", {
+      'peer': peer,
+      'provider': provider,
+    });
   }
 }

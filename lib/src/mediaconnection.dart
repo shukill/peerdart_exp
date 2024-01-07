@@ -23,11 +23,11 @@ class MediaConnection extends BaseConnection {
   // ignore: unused_field
   late MediaStream? _remoteStream;
 
-  void addStream(MediaStream remoteStream) {
+  void addStream(MediaStream? remoteStream) {
     logger.log('Receiving stream $remoteStream');
 
     _remoteStream = remoteStream;
-    super.emit<MediaStream>('stream', remoteStream);
+    super.emit<MediaStream?>('stream', remoteStream);
   }
 
   @override
@@ -100,11 +100,13 @@ class MediaConnection extends BaseConnection {
       callOptions?.sdpTransform = callOptions.sdpTransform;
     }
     final op = PeerConnectOption(
-        payload: PeerConnectOption(
-            stream: _localStream,
-            sdp: options!.payload!.sdp,
-            connectionId: options!.payload!.connectionId,
-            metadata: options!.payload!.metadata));
+      payload: PeerConnectOption(
+        stream: _localStream,
+        sdp: options!.payload!.sdp,
+        connectionId: options!.payload!.connectionId,
+        metadata: options!.payload!.metadata,
+      ),
+    );
     _negotiator?.startConnection(op.payload!);
 
     // Retrieve lost messages stored because PeerConnection not set up.
