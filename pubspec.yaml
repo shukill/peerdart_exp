@@ -12,6 +12,7 @@ dependencies:
   flutter_webrtc: ^0.9.47
   web_socket_channel: ^2.4.0
   events_emitter: ^0.5.2
+  sdp_transform: ^0.3.2
 dev_dependencies:
   lints: ^2.0.0
   flutter_test:
