@@ -13,8 +13,7 @@ class MediaConnection extends BaseConnection {
     _negotiator = Negotiator(this);
 
     if (_localStream != null) {
-      _negotiator?.startConnection(
-          options!.copyWith(originator: true, stream: _localStream));
+      _negotiator?.startConnection(options!.copyWith(originator: true, stream: _localStream));
     }
   }
   final _idPrefix = 'mc_';
@@ -24,9 +23,10 @@ class MediaConnection extends BaseConnection {
   late MediaStream? _remoteStream;
 
   void addStream(MediaStream? remoteStream) {
-    logger.log('Receiving stream $remoteStream');
+    logger.log('Receiving stream on add stream ${remoteStream?.id}');
 
     _remoteStream = remoteStream;
+    emit('stream', remoteStream);
     super.emit<MediaStream?>('stream', remoteStream);
   }
 
@@ -72,10 +72,7 @@ class MediaConnection extends BaseConnection {
         open = true;
         break;
       case ServerMessageType.Candidate:
-        _negotiator?.handleCandidate(RTCIceCandidate(
-            payload["candidate"]["candidate"],
-            payload["candidate"]["sdpMid"],
-            payload["candidate"]["sdpMLineIndex"]));
+        _negotiator?.handleCandidate(RTCIceCandidate(payload["candidate"]["candidate"], payload["candidate"]["sdpMid"], payload["candidate"]["sdpMLineIndex"]));
         break;
 
       default:
@@ -99,6 +96,7 @@ class MediaConnection extends BaseConnection {
     if (callOptions?.sdpTransform != null) {
       callOptions?.sdpTransform = callOptions.sdpTransform;
     }
+
     final op = PeerConnectOption(
       payload: PeerConnectOption(
         stream: _localStream,

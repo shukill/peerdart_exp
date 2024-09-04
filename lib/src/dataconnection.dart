@@ -20,8 +20,7 @@ class DataConnection extends BaseConnection {
 
     _negotiator = Negotiator(this);
 
-    _negotiator?.startConnection(
-        options?.payload ?? PeerConnectOption(originator: true));
+    _negotiator?.startConnection(options?.payload ?? PeerConnectOption(originator: true));
   }
 
   final _idPrefix = 'dc_';
@@ -68,10 +67,7 @@ class DataConnection extends BaseConnection {
         break;
 
       case ServerMessageType.Candidate:
-        _negotiator?.handleCandidate(RTCIceCandidate(
-            payload["candidate"]["candidate"],
-            payload["candidate"]["sdpMid"],
-            payload["candidate"]["sdpMLineIndex"]));
+        _negotiator?.handleCandidate(RTCIceCandidate(payload["candidate"]["candidate"], payload["candidate"]["sdpMid"], payload["candidate"]["sdpMLineIndex"]));
         break;
       default:
         logger.warn(

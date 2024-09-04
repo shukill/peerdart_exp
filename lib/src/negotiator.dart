@@ -39,7 +39,7 @@ class Negotiator<T extends BaseConnection> {
   }
 
   Future<void> handleSDP(String type, Map<String, dynamic> sdp) async {
-    final description = setPreferredCodec(RTCSessionDescription(sdp["sdp"], sdp["type"]));
+    final description = RTCSessionDescription(sdp["sdp"], sdp["type"]);
 
     final peerConnection = connection.peerConnection;
     final provider = connection.provider;
@@ -63,7 +63,6 @@ class Negotiator<T extends BaseConnection> {
 
     try {
       final answer = await peerConnection?.createAnswer();
-      logger.log("Created answer.");
 
       try {
         await peerConnection?.setLocalDescription(answer!);

@@ -16,14 +16,7 @@ class Peer extends StreamEventEmitter {
   Peer({String? id, PeerOptions? options}) {
     String? userId = id;
 
-    PeerOptions initOptions = PeerOptions(
-        debug: LogLevel.Disabled,
-        host: PeerConfig.CLOUD_HOST,
-        port: PeerConfig.CLOUD_PORT,
-        path: "/",
-        key: _defaultKey,
-        token: util.randomToken(),
-        config: PeerConfig.defaultConfig);
+    PeerOptions initOptions = PeerOptions(debug: LogLevel.Disabled, host: PeerConfig.CLOUD_HOST, port: PeerConfig.CLOUD_PORT, path: "/", key: _defaultKey, token: util.randomToken(), config: PeerConfig.defaultConfig);
 
     if (options != null) {
       initOptions = initOptions.merge(options);
@@ -55,10 +48,7 @@ class Peer extends StreamEventEmitter {
     if (userId != null) {
       _initialize(userId);
     } else {
-      _api
-          .retrieveId()
-          .then((value) => _initialize(value))
-          .catchError((error) => _abort(PeerErrorType.ServerError, error));
+      _api.retrieveId().then((value) => _initialize(value)).catchError((error) => _abort(PeerErrorType.ServerError, error));
     }
   }
 
@@ -113,9 +103,7 @@ class Peer extends StreamEventEmitter {
   Socket _createServerConnection() {
     final socket = Socket(_options);
 
-    socket
-        .on<Map<String, dynamic>>(SocketEventType.Message.type)
-        .listen((data) {
+    socket.on<Map<String, dynamic>>(SocketEventType.Message.type).listen((data) {
       final ctx = ServerMessage.fromMap(data);
 
       _handleMessage(ctx);
@@ -173,16 +161,14 @@ class Peer extends StreamEventEmitter {
           'API KEY "${_options.key}" is invalid',
         );
         break;
-      case ServerMessageType
-            .Leave: // Another peer has closed its connection to this peer.
+      case ServerMessageType.Leave: // Another peer has closed its connection to this peer.
         logger.log("Received leave message from $peerId");
         if (peerId != null) {
           _cleanupPeer(peerId);
           _connections.removeWhere(((key, value) => key == peerId));
         }
         break;
-      case ServerMessageType
-            .Expire: // The offer sent to a peer has expired without response.
+      case ServerMessageType.Expire: // The offer sent to a peer has expired without response.
         emitError(
           PeerErrorType.PeerUnavailable,
           "Could not connect to peer $peerId",
@@ -206,10 +192,7 @@ class Peer extends StreamEventEmitter {
             if (payload["type"] == ConnectionType.Media.type) {
               final serializedPayload = PeerConnectOption.fromMap(payload);
 
-              final data = PeerConnectOption(
-                  connectionId: connectionId,
-                  payload: serializedPayload,
-                  metadata: payload["metadata"]);
+              final data = PeerConnectOption(connectionId: connectionId, payload: serializedPayload, metadata: payload["metadata"]);
 
               final mediaConnection = MediaConnection(peerId, this, data);
               connection = mediaConnection;
@@ -224,8 +207,7 @@ class Peer extends StreamEventEmitter {
                 payload: serializedPayload,
                 metadata: payload["metadata"],
                 label: payload["label"],
-                serialization: SerializationType.values.singleWhere(
-                    (element) => element.type == payload["serialization"]),
+                serialization: SerializationType.values.singleWhere((element) => element.type == payload["serialization"]),
                 reliable: payload["reliable"],
               );
 
@@ -273,8 +255,7 @@ class Peer extends StreamEventEmitter {
     }
   }
 
-  MediaConnection call(String peer, MediaStream? stream,
-      {CallOption? options}) {
+  MediaConnection call(String peer, MediaStream? stream, {CallOption? options}) {
     if (disconnected) {
       logger.warn(
         "You cannot connect to a new Peer because you called .disconnect() on this Peer and ended your connection with the server. You can create a new Peer to reconnect.",
@@ -288,8 +269,7 @@ class Peer extends StreamEventEmitter {
     PeerConnectOption organizedOptions = PeerConnectOption(stream: stream);
 
     if (options != null) {
-      organizedOptions = organizedOptions.copyWith(
-          metadata: options.metadata, sdpTransform: options.sdpTransform);
+      organizedOptions = organizedOptions.copyWith(metadata: options.metadata, sdpTransform: options.sdpTransform);
     }
 
     final mediaConnection = MediaConnection(peer, this, organizedOptions);
@@ -406,8 +386,7 @@ class Peer extends StreamEventEmitter {
 
   /// Add a data/media connection to this peer. */
   /// connection: DataConnection / MediaConnection
-  void _addConnection(String peerId,
-      {DataConnection? dataConnection, MediaConnection? mediaConnection}) {
+  void _addConnection(String peerId, {DataConnection? dataConnection, MediaConnection? mediaConnection}) {
     late BaseConnection connection;
 
     if (mediaConnection != null) {
@@ -434,8 +413,7 @@ class Peer extends StreamEventEmitter {
   void removeConnection(dynamic connection) {
     final connections = _connections[connection.peer] as List<dynamic>;
 
-    final index = connections
-        .indexWhere((c) => c.connectionId == connection.connectionId);
+    final index = connections.indexWhere((c) => c.connectionId == connection.connectionId);
 
     connections.removeAt(index);
 

@@ -1,5 +1,5 @@
 # Highly experimental major clone of orignial PeerDart Package
-=> Credits to orignal authors , I'm simply striving to make it production ready :)
+=> Credits to orignal authors (https://github.com/MuhammedKpln/peerdart) , I'm simply striving to make it production ready :)
 
 # PeerDart: Simple peer-to-peer with WebRTC
 
