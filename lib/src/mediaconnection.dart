@@ -1,5 +1,5 @@
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:peerdart_exp/peerdart.dart';
+import 'package:peerdart_exp/peerdart_exp.dart';
 import 'package:peerdart_exp/src/baseconnection.dart';
 import 'package:peerdart_exp/src/logger.dart';
 import 'package:peerdart_exp/src/negotiator.dart';

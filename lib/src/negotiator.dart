@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:peerdart_exp/src/baseconnection.dart';
-import 'package:peerdart_exp/src/codec_utils.dart';
 import 'package:peerdart_exp/src/dataconnection.dart';
 import 'package:peerdart_exp/src/option_interfaces.dart';
 
@@ -28,7 +27,8 @@ class Negotiator<T extends BaseConnection> {
 
         final RTCDataChannelInit config = RTCDataChannelInit();
 
-        final dataChannel = await peerConnection.createDataChannel(DataChannels.data.name, config);
+        final dataChannel = await peerConnection.createDataChannel(
+            DataChannels.data.name, config);
 
         dataConnection.initialize(dataChannel);
       }
@@ -96,7 +96,8 @@ class Negotiator<T extends BaseConnection> {
       RTCSessionDescription offer;
 
       if (connection.options?.constraints != null) {
-        offer = await peerConnection!.createOffer(connection.options!.constraints!);
+        offer =
+            await peerConnection!.createOffer(connection.options!.constraints!);
       } else {
         offer = await peerConnection!.createOffer();
       }
@@ -145,7 +146,8 @@ class Negotiator<T extends BaseConnection> {
   Future<RTCPeerConnection> _startPeerConnection() async {
     logger.log("Creating RTCpeerConnection?.");
 
-    final peerConnection = await createPeerConnection(connection.provider?.options.config ?? {});
+    final peerConnection =
+        await createPeerConnection(connection.provider?.options.config ?? {});
 
     _setupListeners(peerConnection);
 
@@ -272,7 +274,8 @@ class Negotiator<T extends BaseConnection> {
 
       final dataChannel = channel;
 
-      final DataConnection connection = provider?.getConnection(peerId, connectionId);
+      final DataConnection connection =
+          provider?.getConnection(peerId, connectionId);
 
       connection.initialize(dataChannel);
     };
@@ -298,7 +301,8 @@ class Negotiator<T extends BaseConnection> {
     logger.log("Cleaning up PeerConnection to ${connection.peer}");
 
     final peerConnection = connection.peerConnection;
-    final peerConnectionNotClosed = peerConnection?.signalingState != RTCSignalingState.RTCSignalingStateClosed;
+    final peerConnectionNotClosed = peerConnection?.signalingState !=
+        RTCSignalingState.RTCSignalingStateClosed;
     bool dataChannelNotClosed = false;
 
     if (peerConnection == null) {
@@ -316,7 +320,8 @@ class Negotiator<T extends BaseConnection> {
     MediaStream? stream,
     MediaConnection mediaConnection,
   ) {
-    logger.log("add stream ${stream?.id} to media connection ${mediaConnection.connectionId}");
+    logger.log(
+        "add stream ${stream?.id} to media connection ${mediaConnection.connectionId}");
 
     mediaConnection.addStream(stream);
   }

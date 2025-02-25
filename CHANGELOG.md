@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Updated to the latest webrtc
+
 ## 1.0.1
 
 - Experimatal commit on stream reciver
